@@ -33,13 +33,13 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		}
 		
 		//\inv getNbIn() >= 0
-		if(getNbIn() <= 0){
-			throw new ContractError("Invariant: nbIn > 0 does not hold");
+		if(getNbIn() < 0){
+			throw new ContractError("Invariant: nbIn >= 0 does not hold");
 		}
 		
 		//\inv getNbOut() >= 0
-		if(getNbOut() <= 0){
-			throw new ContractError("Invariant: nbOut > 0 does not hold");
+		if(getNbOut() < 0){
+			throw new ContractError("Invariant: nbOut >= 0 does not hold");
 		}
 	}
 	
@@ -84,25 +84,124 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 			throw new ContractError("Pre-Condition: not(full) does not hold");
 		}
 		
+		checkInvariant();
+		
+		//capture
+		int nbIn_atpre = getNbIn();
+		int nbOut_atpre = getNbOut();
+		
 		getDelegate().enterIn();
+		
+		checkInvariant();
+		
+		//post
+		//\post getNbIn() = getNbIn()@pre + 1
+		if(getNbIn() != nbIn_atpre + 1) {
+			throw new ContractError("Post-Condition: nbIn = nbIn@pre + 1 does not hold");
+		}
+		
+		//\post getNbOut() = getNbOut()@pre
+		if(getNbOut() != nbOut_atpre) {
+			throw new ContractError("Post-Condition: nbOut = nbOut@pre does not hold");
+		}
 	}
 
 	@Override
 	public void leaveIn() {
-		// TODO
+		//pre
+		//\pre getNbIn() > 0
+		if(getNbIn()<=0){
+			throw new ContractError("Pre-Condition: nbIn > 0 does not hold");
+		}
+		
+		checkInvariant();
+		
+		//capture
+		int nbIn_atpre = getNbIn();
+		int nbOut_atpre = getNbOut();
+		
 		getDelegate().leaveIn();
+		
+		checkInvariant();
+		
+		//post
+		//\post getNbIn() = getNbIn()@pre - 1
+		if(getNbIn() != nbIn_atpre - 1) {
+			throw new ContractError("Post-Condition: nbIn = nbIn@pre - 1 does not hold");
+		}
+		
+		
+		//\post getNbOut() = getNbOut()@pre
+		if(getNbOut() != nbOut_atpre) {
+			throw new ContractError("Post-Condition: nbOut = nbOut@pre does not hold");
+		}
+		
 	}
 
 	@Override
 	public void enterOut() {
-		// TODO
+		
+		//pre
+		//\pre !isFull()
+		if(isFull()){
+			throw new ContractError("Pre-Condition: not(full) does not hold");
+		}
+		
+		checkInvariant();
+		
+		//capture
+		int nbIn_atpre = getNbIn();
+		int nbOut_atpre = getNbOut();
+		
 		getDelegate().enterOut();
+		
+		checkInvariant();
+		
+		
+		//post
+		//\post getNbIn() = getNbIn()@pre
+		if(getNbIn() != nbIn_atpre) {
+			throw new ContractError("Post-Condition: nbIn = nbIn@pre does not hold");
+		}
+		
+		
+		//\post getNbOut() = getNbOut()@pre + 1
+		if(getNbOut() != nbOut_atpre + 1) {
+			throw new ContractError("Post-Condition: nbOut = nbOut@pre + 1 does not hold");
+		}
+		
 	}
 
 	@Override
 	public void leaveOut() {
-		// TODO
+		//pre
+		//\pre getNbOut() > 0
+		if(getNbOut()<=0){
+			throw new ContractError("Pre-Condition: nbOut > 0 does not hold");
+		}
+		
+		checkInvariant();
+		
+		//capture
+		int nbIn_atpre = getNbIn();
+		int nbOut_atpre = getNbOut();
+		
+		
 		getDelegate().leaveOut();
+		
+		checkInvariant();
+		
+		//post
+		//\post getNbIn() = getNbIn()@pre
+		if(getNbIn() != nbIn_atpre) {
+			throw new ContractError("Post-Condition: nbIn = nbIn@pre does not hold");
+		}
+		
+		
+		//\post getNbOut() = getNbOut()@pre - 1
+		if(getNbOut() != nbOut_atpre - 1) {
+			throw new ContractError("Post-Condition: nbOut = nbOut@pre - 1 does not hold");
+		}
 	}
 	
 }

@@ -55,6 +55,7 @@ public class LimitedRoadContract extends LimitedRoadDecorator {
 			throw new ContractError("Pre-Condition: lim > 0 does not hold");
 		}
 		
+		checkInvariant();
 		
 		super.init(lim);
 		checkInvariant();
