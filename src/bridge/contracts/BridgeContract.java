@@ -204,4 +204,83 @@ public class BridgeContract extends LimitedRoadContract implements BridgeService
 		}
 	}
 	
+	
+	@Override
+	public void enter() {
+		//pre
+		//\pre !isFull()
+		if(isFull()) {
+			throw new ContractError("Pre-Condition: not(full) does not hold");
+		}
+		
+		checkInvariant();
+		
+		//capture
+		int nbIn_atpre = getNbIn();
+		int nbOut_atpre = getNbOut();
+		
+		getDelegate().enter();
+		
+		checkInvariant();
+		
+		//post
+		/* post: if getNbIn()@pre > getNbOut()@pre
+		 *       then
+		 *         getNbIn() == getNbIn()@pre + 1
+		 *         getNbOut() == getNbOut()@pre
+		 *       else
+		 *         getNbIn() == getNbIn()@pre
+		 *         getNbOut() == getNbOut()@pre + 1
+		 */
+		
+		if(nbIn_atpre > nbOut_atpre) {
+			if((getNbIn() != nbIn_atpre+1) || (getNbOut() != nbOut_atpre)){
+				throw new ContractError("Post-Condition: if getNbIn()@pre > getNbOut()@pre then getNbIn() == getNbIn()@pre + 1 and getNbOut() == getNbOut()@pre does not hold");
+			}
+		}else {
+			if((getNbIn() != nbIn_atpre) || (getNbOut() != nbOut_atpre + 1)){
+				throw new ContractError("Post-Condition: if getNbIn()@pre > getNbOut()@pre then getNbIn() == getNbIn()@pre and getNbOut() == getNbOut()@pre + 1 does not hold");
+			}
+		}
+	}
+	
+	@Override
+	public void leave(){
+		//pre
+		//\pre getNbCars() > 0
+		if(getNbCars() <= 0) {
+			throw new ContractError("Pre-Condition: nbCars > 0 does not hold");
+		}
+		
+		checkInvariant();
+		
+		//capture
+		int nbIn_atpre = getNbIn();
+		int nbOut_atpre = getNbOut();
+		
+		getDelegate().leave();
+		
+		checkInvariant();
+		
+		//post
+		/* post: if getNbIn()@pre > getNbOut()@pre
+		 *       then
+		 *         getNbIn() == getNbIn()@pre - 1
+		 *         getNbOut() == getNbOut()@pre
+		 *       else
+		 *         getNbIn() == getNbIn()@pre
+		 *         getNbOut() == getNbOut()@pre - 1
+		 */
+		
+		if(nbIn_atpre > nbOut_atpre) {
+			if((getNbIn() != nbIn_atpre-1) || (getNbOut() != nbOut_atpre)){
+				throw new ContractError("Post-Condition: if getNbIn()@pre > getNbOut()@pre then getNbIn() == getNbIn()@pre - 1 and getNbOut() == getNbOut()@pre does not hold");
+			}
+		}else {
+			if((getNbIn() != nbIn_atpre) || (getNbOut() != nbOut_atpre-1)){
+				throw new ContractError("Post-Condition: if getNbIn()@pre > getNbOut()@pre then getNbIn() == getNbIn()@pre and getNbOut() == getNbOut()@pre - 1 does not hold");
+			}
+		}
+	}
+	
 }
