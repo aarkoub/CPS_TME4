@@ -18,8 +18,6 @@ public class TrafficLight implements
 	@Override
 	public void init() {
 		on = false;
-		green = false;
-		red = true;
 	}
 
 	
