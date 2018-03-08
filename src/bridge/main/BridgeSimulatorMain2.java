@@ -21,6 +21,9 @@ public class BridgeSimulatorMain2 {
 		CarSensor inMainlandSensor = new CarSensor("InMainland");
 		CarSensor outMainlandSensor = new CarSensor("OutMainland");
 		
+
+		
+
 		// initialisations
 		bridge.init(10); // 10 voitures max.
 		controller.init();
@@ -31,6 +34,12 @@ public class BridgeSimulatorMain2 {
 		outIslandSensor.init();
 		inMainlandSensor.init();
 		outMainlandSensor.init();
+		
+		
+		inIslandLight.switchOn();
+		inMainlandLight.switchOn();
+		inMainlandLight.changeGreen();
+		
 		
 		// liaisons
 		simulator.bindBridgeControllerService(controller);

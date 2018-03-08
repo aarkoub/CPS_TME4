@@ -58,20 +58,25 @@ public class BridgeSimulator implements
 		}
 	}
 
-	
+	private int ini = 0;
+	private int inm = 0;
 	public void stepRandom() {
 		if(rand.nextBoolean()) {
 			sensors.get("InIsland").activate();
+			ini++;
 		}
 
 		if(rand.nextBoolean()) {
 			sensors.get("InMainland").activate();
+			inm++;
 		}
-		if(rand.nextBoolean()) {
+		if(rand.nextBoolean() && ini > 0) {
 			sensors.get("OutIsland").activate();
+			ini--;
 		}
-		if(rand.nextBoolean()) {
+		if(rand.nextBoolean() && inm > 0) {
 			sensors.get("OutMainland").activate();
+			inm--;
 		}
 	}
 

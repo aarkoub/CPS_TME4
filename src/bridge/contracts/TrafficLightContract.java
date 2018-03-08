@@ -35,7 +35,7 @@ public class TrafficLightContract extends LightContract implements TrafficLightS
 		// puis vérifier au-dessus
 		super.checkInvariant();
 		// inv'
-		boolean inv = isOn() && ((isGreen()==true && isRed()==false) || (isGreen()==false && isRed()==true));
+		boolean inv = (isGreen()==true && isRed()==false) || (isGreen()==false && isRed()==true);
 		if(!inv) {
 			Contractor.defaultContractor().invariantError("TrafficLightService","The traffic light has two distinct colors !");
 		}
@@ -46,7 +46,7 @@ public class TrafficLightContract extends LightContract implements TrafficLightS
 		// run
 		getDelegate().init();   // do not inherit from init, so do not call super !
 		// inv post
-		checkInvariant();
+		super.checkInvariant();
 		// post
 		if(!(isOn()==false)) {
 			Contractor.defaultContractor().postconditionError("TrafficLightService","init","The light should be off after initialization");
@@ -60,12 +60,13 @@ public class TrafficLightContract extends LightContract implements TrafficLightS
 		// run
 		super.switchOn(); // refinement : the contract will be tested (invariant pre & post included)
 		// post'
-		if(!(isGreen())) {
+		if(isGreen()) {
 			Contractor.defaultContractor().postconditionError("TrafficLightService","switchOn","The light has not turned green");
 		}
-		if(!(!isRed())) {
+		if(!isRed()) {
 			Contractor.defaultContractor().postconditionError("TrafficLightService","switchOn","The light is still red");
 		}
+		
 	}
 
 	@Override

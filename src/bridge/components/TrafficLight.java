@@ -19,7 +19,7 @@ public class TrafficLight implements
 	public void init() {
 		on = false;
 		green = false;
-		red = false;
+		red = true;
 	}
 
 	

@@ -8,7 +8,7 @@ public class LightContract extends LightDecorator {
 	public LightContract(LightService delegate) {
 		super(delegate);
 	}
-
+	
 	public void checkInvariant() {
 		// rien à vérifier
 	}
@@ -34,7 +34,7 @@ public class LightContract extends LightDecorator {
 		// captures
 		boolean isOn_atPre = isOn();
 		// inv pre
-		checkInvariant();
+		//checkInvariant();
 		// run
 		super.switchOn();
 		// inv post
@@ -51,7 +51,7 @@ public class LightContract extends LightDecorator {
 		if(!(isOn())) {
 			Contractor.defaultContractor().preconditionError("LightService","switchOff","The light is not on");
 		}
-		// captures
+		// capture
 		boolean isOn_atPre = isOn();
 		// inv pre
 		checkInvariant();
